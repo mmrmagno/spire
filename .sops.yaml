@@ -1,0 +1,21 @@
+keys:
+  - &workstation age1hafr9j7hllceaqedmycevuefzcpp36a96tse8mqq9d2d3ts6f3pssyeffa
+
+creation_rules:
+  - path_regex: talos/secrets/.*\.ya?ml$
+    key_groups:
+      - age:
+          - *workstation
+
+  - path_regex: talos/secrets/talosconfig(\.enc)?$
+    input_type: yaml
+    output_type: yaml
+    key_groups:
+      - age:
+          - *workstation
+
+  - path_regex: kubernetes/.*\.enc\.yaml$
+    encrypted_regex: ^(data|stringData)$
+    key_groups:
+      - age:
+          - *workstation

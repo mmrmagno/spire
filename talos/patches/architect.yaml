@@ -1,0 +1,20 @@
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: architect
+auto: "off"
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/metal-installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8:v1.14.1
+provisioning:
+  diskSelector:
+    match: '"/dev/disk/by-id/nvme-Corsair_MP600_MICRO_A828B452002PJ7" in disk.symlinks'
+  wipe: true
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:etcd:backup
+allowedKubernetesNamespaces:
+  - talos-backup

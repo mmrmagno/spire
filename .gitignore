@@ -1,0 +1,21 @@
+# Talos secrets. Only the SOPS-encrypted twins of these are ever committed.
+talos/secrets/secrets.yaml
+talos/secrets/talosconfig
+talosconfig
+kubeconfig
+
+# Generated machine configs. These embed cluster CAs and join tokens and are
+# fully reproducible from talos/secrets/secrets.enc.yaml plus talos/patches.
+# They are never committed. Rebuild with scripts/gen-configs.sh.
+talos/generated/
+
+# age identity. Belongs in the password manager, not the repo.
+*.agekey
+age.key
+
+# Anything that slipped through with an obvious secret suffix.
+*.key
+*.pem
+!*.pub
+.env
+.decrypted~*

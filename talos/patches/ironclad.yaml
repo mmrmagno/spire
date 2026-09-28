@@ -1,0 +1,13 @@
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: ironclad
+auto: "off"
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/metal-installer/a41f967fabc5d1edf3efe2fa2833662218a338b7569216cbfde1d324a4963d79:v1.14.1
+provisioning:
+  diskSelector:
+    match: '"/dev/disk/by-id/nvme-KINGSTON_OM8TAP41024K1-A00_50026B73843CD9AA" in disk.symlinks'
+  wipe: true
