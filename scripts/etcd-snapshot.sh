@@ -23,13 +23,14 @@ exec 9>"$DEST/.lock"
 flock -n 9 || { echo "another snapshot is already running" >&2; exit 1; }
 
 NAME="etcd-$(date +%Y%m%d-%H%M%S)"
-PLAIN="$DEST/$NAME.db"
-trap '[ -f "$PLAIN" ] && shred -u "$PLAIN"' EXIT
+WORK="$(mktemp -d "${XDG_RUNTIME_DIR:-/tmp}/etcd-snapshot.XXXXXX")"
+PLAIN="$WORK/$NAME.db"
+OUT="$DEST/$NAME.db.age"
+trap 'find "$WORK" -type f -exec shred -u {} + 2>/dev/null; rm -rf "$WORK"' EXIT
 
 talosctl -n "$CONTROL_PLANE_IP" etcd snapshot "$PLAIN"
-age -r "$RECIPIENT" -o "$PLAIN.age" "$PLAIN"
-shred -u "$PLAIN"
-echo "saved: $PLAIN.age"
+age -r "$RECIPIENT" -o "$OUT" "$PLAIN"
+echo "saved: $OUT"
 
 mapfile -t local_sets < <(ls -1 "$DEST" | grep -E "$PATTERN" | sort)
 while (( ${#local_sets[@]} > LOCAL_KEEP )); do
@@ -41,11 +42,11 @@ done
 if ! rclone lsd "${REMOTE%%:*}:" >/dev/null 2>&1; then
   echo "upload skipped: rclone remote ${REMOTE%%:*}: is not logged in" >&2
   echo "fix: rclone lsd ${REMOTE%%:*}: --protondrive-2fa=<code>, then re-run" >&2
-  echo "local snapshot kept: $PLAIN.age" >&2
+  echo "local snapshot kept: $OUT" >&2
   exit 1
 fi
 
-rclone copy "$PLAIN.age" "$REMOTE" --retries 5 --low-level-retries 20
+rclone copy "$OUT" "$REMOTE" --retries 5 --low-level-retries 20
 echo "uploaded: $REMOTE/$NAME.db.age"
 
 mapfile -t remote_sets < <(rclone lsf --files-only "$REMOTE" | grep -E "$PATTERN" | sort)

@@ -9,6 +9,8 @@ CONTROL_PLANE_IP="192.168.0.213"
 
 export SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
 
+umask 077
+
 cd "$REPO"
 
 usage() { echo "usage: $0 architect|ironclad|all" >&2; exit 2; }
