@@ -1,5 +1,11 @@
 apiVersion: v1alpha1
 kind: StaticHostConfig
-name: 192.168.0.213
+name: 10.10.10.11
 hostnames:
   - spire.home.arpa
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+nodeIP:
+  validSubnets:
+    - 10.10.10.0/24

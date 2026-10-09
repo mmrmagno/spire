@@ -19,3 +19,8 @@ creation_rules:
     key_groups:
       - age:
           - *workstation
+
+  - path_regex: network/.*\.enc\.ya?ml$
+    key_groups:
+      - age:
+          - *workstation

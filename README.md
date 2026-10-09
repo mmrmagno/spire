@@ -47,9 +47,16 @@ kubernetes/
   cni/           Cilium Helm values
   device-plugins/  Intel GPU plugin
   backup/        in-cluster etcd backup job, not applied yet
+network/
+  merchant.rsc     RouterOS config for the RB5009 gateway
+  osty.rsc         RouterOS config for the CRS309 10G switch
+  secrets.enc.yaml node MACs and the management address, SOPS/age encrypted
+  generated/       rendered configs, gitignored
 scripts/
   gen-configs.sh     renders and validates machine configs
+  gen-network.sh     renders the gateway and switch configs
   etcd-snapshot.sh   manual encrypted etcd snapshot
+  network-backup.sh  encrypted off-device config export
 ```
 
 Rendered machine configs are never committed. They contain the cluster CA and join tokens,
@@ -67,12 +74,53 @@ helm install cilium cilium/cilium --version 1.20.2 -n kube-system -f kubernetes/
 kubectl apply -f kubernetes/device-plugins/intel-gpu-plugin.yaml
 ```
 
+The router is rebuilt the same way, from a reset rather than a backup:
+
+```sh
+scripts/gen-network.sh merchant
+scp network/generated/merchant.rsc mmr@merchant:/
+ssh mmr@merchant '/import file=merchant.rsc verbose=yes dry-run'
+# then, only if the dry run is clean
+/system reset-configuration no-defaults=yes keep-users=yes run-after-reset=merchant.rsc
+```
+
 `gen-configs.sh` needs the age key to decrypt the secrets bundle. It runs `talosctl
 validate` on every config it renders and deletes the output if validation fails, so a
 broken config never reaches a node.
 
 Nodes install to a disk picked by `/dev/disk/by-id`, not `/dev/sda`. `architect` has two
 disks, and device names can swap between boots.
+
+## Network
+
+The lab has its own routed subnet behind a MikroTik RB5009 called `merchant`. The house
+router does the internet, merchant does the lab, and the two route to each other rather than
+NAT, so a device in the house reaches a lab service by its real address instead of a port
+forward. That last part is not finished: until the house router learns a route back, merchant
+masquerades the lab, and the config says so in a comment I would like to delete.
+
+```
+10.10.10.0/24   nodes, gateway 10.10.10.1
+10.10.20.0/24   reserved for Cilium LoadBalancer IPs, advertised by BGP
+10.10.30.0/24   reserved for Ceph
+10.10.40.0/24   reserved for out-of-band management
+```
+
+The VLAN id matches the third octet, so I never have to look it up. One static route on the
+house router covers all of it, now and for whatever I add later.
+
+The network gear is declarative in the same way the nodes are: `network/*.rsc` is a template,
+the values that should not be public live in a SOPS-encrypted file, and `scripts/gen-network.sh`
+renders the two together. Rebuilding a device is a reset plus a one line import.
+
+One port is deliberately held back. `ether8` sits outside the bridge with its own subnet and
+its own DHCP server, so no VLAN, bridge or firewall mistake can cut me off from the router.
+It cost a port I was not using and it has already earned its keep.
+
+The API endpoint is `spire.home.arpa`, pinned on every node with a `StaticHostConfig`, so the
+cluster keeps working even if DNS does not. That pin points at `architect` directly today.
+When a second control plane joins it has to point at a virtual IP instead, or losing
+`architect` takes the endpoint with it.
 
 ## Things I learned the hard way
 
@@ -91,20 +139,16 @@ server through KubePrism.
 **Pods that start before Cilium is ready keep their old Flannel addresses** and cannot
 resolve DNS. Delete them and they come back fine.
 
+**Moving the cluster to a new subnet did not need a rebuild.** My notes said re-addressing a
+single control plane means wiping it, because the etcd peer URL would be stale. That is
+wrong. Talos rewrote the peer URL, reissued the API server certificate with the new address,
+and both kubelets re-registered on their own. Cilium did not follow, though: it caches node
+addresses when the agent starts, so it kept routing node to node traffic to addresses that
+no longer existed while every node still reported `Ready`. Restart the `cilium` and
+`cilium-envoy` daemonsets after any re-IP.
+
 **The MS-01's Intel X710 is picky about SFP+ modules.** It checks them in firmware, so buy
 passive MikroTik DACs and skip the third-party optics.
-
-## Network
-
-Right now everything sits on my flat home LAN. The API endpoint is `spire.home.arpa`,
-pinned on every node with a `StaticHostConfig`, so the cluster keeps working even if home
-DNS is down.
-
-That pin currently points at `architect` directly. When a second control plane joins, it
-has to point at a virtual IP instead, or losing `architect` takes the endpoint with it.
-
-Later the lab gets its own routed subnet behind a MikroTik RB5009, which also brings BGP so
-Cilium can advertise LoadBalancer IPs. The 10 GbE switch is for Ceph.
 
 ## What is next
 

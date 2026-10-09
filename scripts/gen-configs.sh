@@ -5,7 +5,7 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CLUSTER="spire"
 ENDPOINT="https://spire.home.arpa:6443"
 VERSION="v1.14.1"
-CONTROL_PLANE_IP="192.168.0.213"
+CONTROL_PLANE_IP="10.10.10.11"
 
 export SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
 

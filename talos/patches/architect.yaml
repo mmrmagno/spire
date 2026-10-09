@@ -18,3 +18,8 @@ allowedRoles:
   - os:etcd:backup
 allowedKubernetesNamespaces:
   - talos-backup
+---
+cluster:
+  etcd:
+    advertisedSubnets:
+      - 10.10.10.0/24
