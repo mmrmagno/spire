@@ -7,6 +7,4 @@ ingress:
     service: http://blog.blog.svc.cluster.local:8080
   - hostname: www.marc-os.com
     service: http://blog.blog.svc.cluster.local:8080
-  - hostname: blog-next.marc-os.com
-    service: http://blog.blog.svc.cluster.local:8080
   - service: http_status:404
