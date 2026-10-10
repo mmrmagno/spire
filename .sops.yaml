@@ -1,5 +1,6 @@
 keys:
   - &workstation age1hafr9j7hllceaqedmycevuefzcpp36a96tse8mqq9d2d3ts6f3pssyeffa
+  - &cluster age1vxwz4su45mavgarhcvns83xuarxr7tk2faft60598vkh7eq6gc5sv4rvr0
 
 creation_rules:
   - path_regex: talos/secrets/.*\.ya?ml$
@@ -19,6 +20,7 @@ creation_rules:
     key_groups:
       - age:
           - *workstation
+          - *cluster
 
   - path_regex: network/.*\.enc\.ya?ml$
     key_groups:

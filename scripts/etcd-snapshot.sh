@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CONTROL_PLANE_IP="192.168.0.213"
+CONTROL_PLANE_IP="${SPIRE_CONTROL_PLANE_IP:-10.10.10.11}"
 DEST="${SPIRE_BACKUP_DIR:-$HOME/spire-backups}"
 REMOTE="${SPIRE_BACKUP_REMOTE:-proton:Spire/etcd}"
 LOCAL_KEEP="${SPIRE_LOCAL_KEEP:-10}"

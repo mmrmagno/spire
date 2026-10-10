@@ -44,8 +44,10 @@ talos/
   secrets/       secrets.enc.yaml, SOPS/age encrypted
   generated/     rendered machine configs, gitignored
 kubernetes/
-  cni/           Cilium Helm values
-  device-plugins/  Intel GPU plugin
+  flux/          Flux entry point: operator, FluxInstance, the two top-level Kustomizations
+  infrastructure/  cluster add-ons Flux applies, e.g. the Intel GPU plugin
+  apps/          workloads Flux applies after infrastructure is healthy
+  cni/           Cilium Helm values, still installed by hand
   backup/        in-cluster etcd backup job, not applied yet
 network/
   merchant.rsc     RouterOS config for the RB5009 gateway
@@ -55,6 +57,7 @@ network/
 scripts/
   gen-configs.sh     renders and validates machine configs
   gen-network.sh     renders the gateway and switch configs
+  bootstrap-flux.sh  installs the Flux Operator and hands the cluster to git
   etcd-snapshot.sh   manual encrypted etcd snapshot
   network-backup.sh  encrypted off-device config export
 ```
@@ -71,8 +74,12 @@ talosctl apply-config --insecure -n <node-ip> -f talos/generated/<node>.yaml
 talosctl bootstrap -n <control-plane-ip>
 talosctl kubeconfig ./kubeconfig
 helm install cilium cilium/cilium --version 1.20.2 -n kube-system -f kubernetes/cni/cilium-values.yaml
-kubectl apply -f kubernetes/device-plugins/intel-gpu-plugin.yaml
+scripts/bootstrap-flux.sh
 ```
+
+Everything after Cilium comes from git. The bootstrap script only installs the Flux
+Operator and the age key Flux decrypts secrets with, then the FluxInstance pulls the rest
+from this repo.
 
 The router is rebuilt the same way, from a reset rather than a backup:
 
