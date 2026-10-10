@@ -1,18 +1,12 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cloudflared
-data:
-  config.yaml: |
-    tunnel: 382e380e-3852-46b7-976f-bddce10161c2
-    credentials-file: /etc/cloudflared/creds/credentials.json
-    metrics: 0.0.0.0:2000
-    no-autoupdate: true
-    ingress:
-      - hostname: marc-os.com
-        service: http://blog.blog.svc.cluster.local:8080
-      - hostname: www.marc-os.com
-        service: http://blog.blog.svc.cluster.local:8080
-      - hostname: blog-next.marc-os.com
-        service: http://blog.blog.svc.cluster.local:8080
-      - service: http_status:404
+tunnel: 382e380e-3852-46b7-976f-bddce10161c2
+credentials-file: /etc/cloudflared/creds/credentials.json
+metrics: 0.0.0.0:2000
+no-autoupdate: true
+ingress:
+  - hostname: marc-os.com
+    service: http://blog.blog.svc.cluster.local:8080
+  - hostname: www.marc-os.com
+    service: http://blog.blog.svc.cluster.local:8080
+  - hostname: blog-next.marc-os.com
+    service: http://blog.blog.svc.cluster.local:8080
+  - service: http_status:404

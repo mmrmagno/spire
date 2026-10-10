@@ -4,7 +4,10 @@ namespace: cloudflared
 resources:
   - namespace.yaml
   - credentials.enc.yaml
-  - config.yaml
   - deployment.yaml
   - pdb.yaml
   - networkpolicy.yaml
+configMapGenerator:
+  - name: cloudflared
+    files:
+      - config.yaml
