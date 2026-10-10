@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - configmap.yaml
   - secret.enc.yaml
+  - broken.yaml

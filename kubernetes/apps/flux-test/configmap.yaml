@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: drift
 data:
-  value: from-git
+  value: from-git-v2
