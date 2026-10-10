@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: discord-webhook
+    namespace: flux-system
+type: Opaque
+stringData:
+    address: ENC[AES256_GCM,data:ltmiiaZCJo1Y4F/0k/IREbYMBVm+hX/WtVVEBGt6JRtbDAgVDj8xjomfF9hviQxjHtrH66ashuMK1nsFAE6cPLGIY6A1RAe/E22eorOTVfIP4Y53Q0mjNf12U7d/76Bdn+4I0OOPG20qdi2QU070kDGWFG/TL+/lgw==,iv:sDSNulssJWlZQeWaZuFGd04vAvLdbZym9LtDPm/O+fU=,tag:POLRfrZcS5AaslySq325Zg==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBKRHFEZ3Y2UTVMMjJ5YW9k
+            NW9tSGJPNWwrajlvMmpqek5CZlZQeGxrd1ZnCjdpYi9aT1dicVJMVG9xdGdPeFNp
+            YWpGSkhTYUNmTEhzZHBnekg5bktadkUKLS0tIGNuVmorR28rTzkrWS9TNWRpTExU
+            OUtnYkNiZ1lIaVhtQ3ora2V2VEdVL2sK7m+niJD6SLFv/jKb5YLzAnR/YqzNs/qy
+            dwYkbhJ1TCkydli2zwcmnhoexSeO0UJMz0xnEPgjVsMKzvmw21R0hA==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1hafr9j7hllceaqedmycevuefzcpp36a96tse8mqq9d2d3ts6f3pssyeffa
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBYcld2RktSNEJ4dnNVWFBm
+            bkt0SVozandFRU1jK1Zlb0M2U1Y4SXFTZUZ3ClpFVDJHbWVEeFk5K203ZFhuakta
+            bHJJVS9CWXkyY1ljeEtZSXA2R2RBZHcKLS0tIEJHbHg1V01VUDJyN0NOeWYzNEo4
+            Nk9rbm1Qa0RjblVRNEtmWTREclFRZ28Kbl0T7f7Q5nOWwXb37on5s3GfOgPIjVNE
+            pyfHoantRWsNLb6QCj8ASgwb/qQEWI114VtxuFPC5Xn5S1gQ+Kz2xQ==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1vxwz4su45mavgarhcvns83xuarxr7tk2faft60598vkh7eq6gc5sv4rvr0
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-10-10T16:54:16Z"
+    mac: ENC[AES256_GCM,data:Xe9559Z6pKTMafaTvwxFq7obBCz5K8phPVvg18TnDkvmxoUDcnL9ZabxOssqAcN/iwQtlMgLEbDTVSxigjNIR2kflVBGZfHJpIzCIsa+71ECtke4jJzFkfpDW2Nkc602fw65aS3DSskm8WJBZjqfKixcVoL6nUzjGy1tIMLcDYE=,iv:J+AUvF66jr7czF1/FjCnzhP5g/ep1RG/j8jOz01e9Jg=,tag:r1JbPwHwFWqZ1iob3douvw==,type:str]
+    version: 3.13.3
