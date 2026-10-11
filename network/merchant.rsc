@@ -142,14 +142,9 @@ set winbox address=REPLACE_MGMT_HOST/32,192.168.88.0/24,10.10.10.0/24
 /ip socks set enabled=no
 /ip upnp set enabled=no
 
-# TEMPORARY, REMOVE WHEN THE UDM HAS THE ROUTE.
-# The design is routed with a single NAT at the UDM. Until the UDM carries
-#   10.10.0.0/16 via 192.168.0.2
-# the lab has no return path, so nothing here can reach the internet. This rule
-# double-NATs the lab to get it online. Delete it and this comment once the UDM
-# route exists, then re-verify that the house can still reach LoadBalancer IPs.
-/ip firewall nat
-add chain=srcnat action=masquerade out-interface-list=WAN comment="TEMPORARY until the UDM route exists"
+# No NAT here on purpose. The UDM carries the static route 10.10.0.0/16 via 192.168.0.2
+# ("spire lab via merchant") and does the only NAT, for the lab too. Without that route the
+# lab has no internet: restore the route on the UDM, do not add a masquerade back here.
 
 # Everything below is cosmetic. It sits last on purpose: /import stops at the first failing
 # line, so anything non-essential must run only after the network is up and reachable.
