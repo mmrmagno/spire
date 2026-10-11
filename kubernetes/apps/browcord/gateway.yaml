@@ -25,7 +25,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: gateway
-          image: GATEWAY_IMAGE
+          image: ghcr.io/mmrmagno/browcord-gateway:latest@sha256:185b963f960c856681717c7f00bda2565ab5158a9f3803607a77279d88fe0455
           ports:
             - {name: http, containerPort: 8080}
             - {name: metrics, containerPort: 9464}

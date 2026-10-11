@@ -8,8 +8,3 @@ resources:
   - networkpolicy.yaml
   - admission.yaml
   - quota.yaml
-images:
-  - name: GATEWAY_IMAGE
-    newName: ghcr.io/mmrmagno/browcord-gateway
-    newTag: latest
-    digest: sha256:185b963f960c856681717c7f00bda2565ab5158a9f3803607a77279d88fe0455
