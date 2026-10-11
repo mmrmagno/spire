@@ -11,5 +11,5 @@ resources:
 images:
   - name: GATEWAY_IMAGE
     newName: ghcr.io/mmrmagno/browcord-gateway
-    newTag: k8s
-    digest: sha256:fb78f77953d712ec805151efa0efa3bfe69ce3da05ccab222d298fa128b3a36c
+    newTag: sha-b2f90d6
+    digest: sha256:ae50df12500846e08e63378f6eefcfea80f7c81c56b72e523e8f8b3cb6603f63

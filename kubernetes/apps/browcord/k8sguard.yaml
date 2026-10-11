@@ -60,7 +60,7 @@ spec:
           ports:
             - {name: http, containerPort: 7070}
           env:
-            - {name: ROOM_IMAGE, value: "ghcr.io/mmrmagno/browcord-room:k8s@sha256:c6e39816bf94c6a8c9357da360974f3686496b34805da81871bf7d4ee58795f1"}
+            - {name: ROOM_IMAGE, value: "ghcr.io/mmrmagno/browcord-room:sha-b2f90d6@sha256:668315a7838e8b9b1b74cc6c3a585af165554388fb53ab1136c388ab26a11fe7"}
             - {name: ROOM_NAMESPACE, value: browcord-rooms}
             - {name: ROOM_GATEWAY_URL, value: "ws://browcord-gateway.browcord.svc.cluster.local:8080"}
             - {name: ROOM_SECCOMP_PROFILE, value: profiles/browcord-chromium.json}
