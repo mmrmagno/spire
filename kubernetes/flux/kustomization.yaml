@@ -4,6 +4,7 @@ resources:
   - flux-operator.yaml
   - flux-instance.yaml
   - gateway-api.yaml
+  - kubelet-cert-approver.yaml
   - infrastructure.yaml
   - infrastructure-config.yaml
   - apps.yaml

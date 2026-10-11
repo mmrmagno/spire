@@ -21,6 +21,7 @@ apiVersion: v1alpha1
 kind: KubeletConfig
 config:
   podPidsLimit: 4096
+  serverTLSBootstrap: true
 ---
 machine:
   seccompProfiles:

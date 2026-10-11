@@ -23,3 +23,8 @@ cluster:
   etcd:
     advertisedSubnets:
       - 10.10.10.0/24
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+config:
+  serverTLSBootstrap: true
