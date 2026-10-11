@@ -66,12 +66,12 @@ spec:
             - {name: ROOM_SECCOMP_PROFILE, value: profiles/browcord-chromium.json}
             - {name: ROOM_CAP, value: "2"}
             - {name: ROOM_CEILING, value: 6h10m}
-            - {name: ROOM_WIDTH, value: "1280"}
-            - {name: ROOM_HEIGHT, value: "720"}
+            - {name: ROOM_WIDTH, value: "1920"}
+            - {name: ROOM_HEIGHT, value: "1080"}
             - {name: ROOM_FPS, value: "30"}
             - {name: ROOM_BITRATE_KBPS, value: "4000"}
             - {name: ROOM_ENCODER, value: vp8enc}
-            - {name: ROOM_START_URL, value: "https://duckduckgo.com"}
+            - {name: ROOM_START_URL, value: "https://www.testufo.com/"}
             - {name: ROOM_STALL_SECONDS, value: "30"}
             - name: GUARD_TOKEN
               valueFrom:
