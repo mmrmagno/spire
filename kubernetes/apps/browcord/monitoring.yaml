@@ -1,0 +1,60 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: browcord-gateway
+  namespace: browcord
+spec:
+  selector:
+    matchLabels:
+      app: browcord-gateway
+  endpoints:
+    - port: metrics
+      interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: browcord
+  namespace: browcord
+spec:
+  groups:
+    - name: browcord
+      rules:
+        - alert: BrowcordGatewayDown
+          expr: up{job="browcord-gateway"} == 0 or absent(up{job="browcord-gateway"})
+          for: 2m
+          labels: {severity: critical}
+          annotations:
+            summary: browcord gateway is down or not scraped
+        - alert: BrowcordRoomFrozen
+          expr: browcord_rooms_watched{state="recovering"} > 0
+          for: 2m
+          labels: {severity: warning}
+          annotations:
+            summary: a browcord room has been recovering for 2 minutes
+        - alert: BrowcordWatchdogRestartedRoom
+          expr: increase(browcord_watchdog_actions_total{action="restart"}[10m]) > 0
+          labels: {severity: warning}
+          annotations:
+            summary: the watchdog restarted a stalled room
+        - alert: BrowcordRoomContainerRestarted
+          expr: increase(kube_pod_container_status_restarts_total{namespace="browcord-rooms"}[10m]) > 0
+          labels: {severity: warning}
+          annotations:
+            summary: a room container restarted
+        - alert: BrowcordRoomsFull
+          expr: increase(browcord_rooms_full_total[15m]) > 0
+          labels: {severity: warning}
+          annotations:
+            summary: someone was turned away because every room slot is in use
+        - alert: BrowcordGuardMissing
+          expr: kube_deployment_status_replicas_available{namespace="browcord",deployment="browcord-k8sguard"} < 1
+          for: 2m
+          labels: {severity: critical}
+          annotations:
+            summary: k8sguard has no available replica, new rooms cannot start
+        - alert: BrowcordSignInRefusalsSpike
+          expr: sum(increase(browcord_signins_total{result=~"refused|limited"}[10m])) > 10
+          labels: {severity: warning}
+          annotations:
+            summary: many refused or rate limited sign ins in 10 minutes

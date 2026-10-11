@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: grafana-admin
+    namespace: monitoring
+type: Opaque
+stringData:
+    admin-user: ENC[AES256_GCM,data:4O00A2o=,iv:mhoHRg9eTHLBN6u6THvJa4RQ7c4S5XOoT/SSU/JW8ko=,tag:/lHTWTE3kNn/vFLn+AO2gw==,type:str]
+    admin-password: ENC[AES256_GCM,data:lFknraG5ZHOG/Zyb+pnGbVhLG3qdVLt3imihIfmTqf0=,iv:VAk6WUfWW5jj/qLkQ0nbwmRSidPqNsgiZmw5CGWifeA=,tag:kedS7M3/aMwLoPAaT6kK0w==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVSlNZblFIbENFenl1UjIr
+            Q2pleE4vSmQ2WWlSVHI5dUtpRGpEcVV4Zm1nCnliUnRXbEdJZ1hMdktXekpRMVJz
+            ODRWbTg3VG84ZjJrbVNlYU1RQUpXOVEKLS0tIDh1Q3h0QyswZUg3Ry9Cb0FTQUh5
+            R1Q0cXdodm9xTFJySU1RRmoyMklpcncK5CTUxo7eOQpVXwHiT0woguxflEtu7AdG
+            bHKKuwazJnR1DGeN93eurjS77Z5yDS6md0GQ9AXjx83oDrygKUuZig==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1hafr9j7hllceaqedmycevuefzcpp36a96tse8mqq9d2d3ts6f3pssyeffa
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBpUCswZStlSU5MSGNYYmpE
+            d2d1SldYa3RkK1lvazVJbVprVzhlbi85akdBCkpXdFdENnhQYUNPMDNsOTdieTFv
+            ZGhqbXBDQ29aTE0rTW9QZW1JNjJkQ3MKLS0tIENxWllvaTBGeUlDUEFIVnlWR1Fl
+            cHJGNEVXQ2pvbnJPNStxRGEvVFN6Z0kK4QJPsFrBOQPyJDokgeDIeRfY8Z4+wEwL
+            A9U/uZBowEmhBq3Lw+pD+Jq9Y0XETWl/gOapkhjysglIDl6p31boGQ==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1vxwz4su45mavgarhcvns83xuarxr7tk2faft60598vkh7eq6gc5sv4rvr0
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-10-11T22:06:41Z"
+    mac: ENC[AES256_GCM,data:0tsttocbbUvVL4NJxqGVaYnXB+O8mm5LiEa61h2y95B1S3J+in0FzFwicZDQH7RB7gFY1XEAKYmsbtLteoPql+86BgA9vzS2as7WoS8baA7Lgg8gSzOQI3yHwitc9kdsLQOKe8WpKXaPeGndA7Cg3o3WUkQnJ1soqRdQ11JAQlo=,iv:/2RMI93ceS6l4T7ldIBFr+QAlp3Cfmg8hWbSydP+MPA=,tag:utRG9fA3umcwoNT3mXfZAQ==,type:str]
+    version: 3.13.3

@@ -8,3 +8,4 @@ resources:
   - traefik
   - cert-manager
   - metrics-server
+  - monitoring

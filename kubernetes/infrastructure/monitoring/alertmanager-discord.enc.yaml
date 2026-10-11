@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: alertmanager-discord
+    namespace: monitoring
+type: Opaque
+stringData:
+    url: ENC[AES256_GCM,data:bEiuRDJ92I2eiWZUaG2pD4gPsf5IxBinnQ4/gWNZTNhcfnoZ+WHJLwD01dLyRUDfANQbsETurjNDikVev2xzlRtTtJxOFEL3wFTJwhU8hS3eX7TycE2msb0FnOLihULkHy6zB3n6a1wE1qiiF5urvFqSkwahTYlOTg==,iv:RsiKpsS1Vmvwlf38iGVYggm0Ec+dcr2RnnCdvCkT0Lk=,tag:wTaagkUpaG9/wc5eiFsU1A==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBmT0s3RGZpbnpSc2JIOHVI
+            eFlxT2lhVHo1L2VuWWpvS2F1L0E3bzd5SmdJCkVVN2ZGWlZDcG5JbGcxNXJYUWZB
+            RmYwQWZRSzN4RDJ6Q0ZzOU4xelBQcVUKLS0tIFNWVks2VWJqRUgvN3I0MXUxM0tx
+            cUF5SmFDT2V1bWVheEErSzU3OW9KWGcKzdx11F3VicB15vNS42rJhHNWjybgSL/Y
+            9oyJyp8e9H+1ldhKuAbC01Om/hjz3WDEsqepu/HhZWnlFeu+vnOrnQ==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1hafr9j7hllceaqedmycevuefzcpp36a96tse8mqq9d2d3ts6f3pssyeffa
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBCWGx4SXBWTnUzWnFBUU9D
+            ekExU0dqVkR1NmVpZTNuUGxmSW0vRmhpdWcwClBaZ3FXNkNiZndxNlNqZ01mSkdq
+            UTJuNUJOYlhONzBaMmhxWkNHVnc2UW8KLS0tIGR4TVo5Z0UyZzFjajloa1RDZ3RE
+            Tm5Bb0l0M21YNDlTQ0pET09wNXdJNmMKBKGqS34WUpZHq07CpegK14QWp09UWK/9
+            ELl5lSPSXANkyZB7vVsx+Skg44tYwN1asg/LlDNbKwgnbrwRErr71A==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1vxwz4su45mavgarhcvns83xuarxr7tk2faft60598vkh7eq6gc5sv4rvr0
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-10-11T22:06:41Z"
+    mac: ENC[AES256_GCM,data:iBNLJsGFh0L9ThvXZG8gq1frpwKefhPQYdUrA+qSGA7fFkz7GoPQ0lygUuqkdfPPDVb7aEQrYDlyShLI3ppf5dTSx3LCGvWY3iFvqksdT/JeIQF+bhkuQywlUnBJ/Wg2ANtCQ6jPLwBge4xCtzNUlIfsic6AjB1djSuV6LeMiTI=,iv:/gNdvJI7+gNCb/Vjk70BSHnZd+ib74FIRIdOiYrieN8=,tag:b5wEXkFsrAz4NXCpbGLuFw==,type:str]
+    version: 3.13.3

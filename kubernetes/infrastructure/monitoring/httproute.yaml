@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana
+  namespace: monitoring
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Grafana
+    gethomepage.dev/group: Cluster
+    gethomepage.dev/description: metrics and dashboards
+    gethomepage.dev/icon: grafana.svg
+    gethomepage.dev/pod-selector: app.kubernetes.io/name=grafana
+spec:
+  parentRefs:
+    - name: home
+      namespace: traefik
+      sectionName: websecure
+  hostnames: [grafana.home.marc-os.com]
+  rules:
+    - backendRefs:
+        - name: kube-prometheus-stack-grafana
+          port: 80
