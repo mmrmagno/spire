@@ -32,8 +32,28 @@ A second MS-01 is on order, plus a MikroTik router and a 10 GbE switch.
   to what.
 - **Intel GPU device plugin**, so pods on `ironclad` can claim a share of the iGPU for
   hardware transcoding.
-- **SOPS and age** for secrets. The only secret in the repo is `talos/secrets/secrets.enc.yaml`,
-  and it is encrypted.
+- **SOPS and age** for secrets. Every secret in the repo is a `*.enc.yaml`, encrypted; Flux holds
+  its own age key and decrypts in the cluster.
+- **Flux** (through the Flux Operator) applies everything under `kubernetes/` from this repo.
+- **Cilium BGP and LB IPAM**: Services of type LoadBalancer get an address from a dedicated range,
+  and the gateway router learns the route over BGP.
+- **Traefik** on the Gateway API, with **cert-manager** issuing a wildcard Let's Encrypt
+  certificate over Cloudflare DNS-01 for the LAN-only names.
+- **Cloudflare Tunnel** for the public sites, so nothing listens on the home WAN.
+- **Homepage** as the start page for everything on the LAN, built from HTTPRoute annotations.
+
+## Deploying an app
+
+1. Make `kubernetes/apps/<app>/` with a namespace (Pod Security `restricted`), a Deployment
+   with the image pinned by digest, a Service, a NetworkPolicy and a kustomization. Copy `blog/`
+   for a public site or `homepage/` for a LAN app.
+2. LAN app: add an HTTPRoute on the `home` Gateway with a `*.home` hostname. TLS and the
+   Homepage tile come for free. Public app: add the hostname to the tunnel config instead.
+3. Secrets go in a `*.enc.yaml`, encrypted with `sops --encrypt --in-place`.
+4. List the folder in `kubernetes/apps/kustomization.yaml`, commit, push. Flux applies it within
+   a minute, and a failed reconcile pings Discord.
+
+Removing the folder removes the app; Flux prunes it.
 
 ## Layout
 
@@ -160,8 +180,8 @@ passive MikroTik DACs and skip the third-party optics.
 
 ## What is next
 
-- **Flux**, so the cluster pulls its state from this repo instead of me running `kubectl`.
-- **Traefik** with Cilium handing out LoadBalancer IPs, and cert-manager for TLS.
+- **browcord** moved over and made Kubernetes native: one pod per room instead of containers
+  started through a Docker socket proxy.
 - **Rook/Ceph** for replicated storage, once every MS-01 has a second NVMe for it.
 - **Real backups** before anything stateful moves in.
 

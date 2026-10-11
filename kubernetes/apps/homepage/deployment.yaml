@@ -61,6 +61,8 @@ spec:
               mountPath: /app/config
             - name: fonts
               mountPath: /app/public/fonts
+            - name: icons
+              mountPath: /app/public/icons
             - name: next-cache
               mountPath: /app/.next/cache
             - name: tmp
@@ -72,6 +74,9 @@ spec:
         - name: fonts
           configMap:
             name: homepage-fonts
+        - name: icons
+          configMap:
+            name: homepage-icons
         - name: next-cache
           emptyDir:
             sizeLimit: 100Mi

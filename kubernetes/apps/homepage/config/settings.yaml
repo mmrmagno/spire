@@ -8,11 +8,8 @@ disableUpdateCheck: true
 statusStyle: dot
 layout:
   Cluster:
-    style: row
-    columns: 3
+    style: column
   Network:
-    style: row
-    columns: 3
+    style: column
   Links:
-    style: row
-    columns: 3
+    style: column

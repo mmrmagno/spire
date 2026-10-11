@@ -24,3 +24,7 @@ configMapGenerator:
     files:
       - fonts/JetBrainsMono-Regular.woff2
       - fonts/JetBrainsMono-Bold.woff2
+  - name: homepage-icons
+    files:
+      - icons/merchant.png
+      - icons/osty.png

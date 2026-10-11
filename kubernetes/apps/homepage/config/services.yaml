@@ -3,6 +3,12 @@
         href: https://192.168.0.1
         description: house router
         icon: ubiquiti-unifi.svg
+    - merchant:
+        description: lab router, RB5009. ssh 10.10.10.1
+        icon: /icons/merchant.png
+    - osty:
+        description: 10G switch, CRS309. not live yet
+        icon: /icons/osty.png
 - Links:
     - marc-os.com:
         href: https://marc-os.com

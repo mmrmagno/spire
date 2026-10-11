@@ -32,5 +32,6 @@ spec:
         authentication:
           type: Anonymous
           anonymous:
+            username: flux-web-lan
             groups:
               - flux-web-lan
