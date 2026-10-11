@@ -3,5 +3,7 @@ kind: Kustomization
 resources:
   - flux-operator.yaml
   - flux-instance.yaml
+  - gateway-api.yaml
   - infrastructure.yaml
+  - infrastructure-config.yaml
   - apps.yaml

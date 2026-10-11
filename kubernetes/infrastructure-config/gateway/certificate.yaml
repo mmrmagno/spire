@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: home
+  namespace: traefik
+spec:
+  secretName: home-tls
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-staging
+  dnsNames:
+    - home.marc-os.com
+    - "*.home.marc-os.com"

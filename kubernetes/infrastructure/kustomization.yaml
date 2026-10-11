@@ -4,3 +4,6 @@ resources:
   - device-plugins/intel-gpu-plugin.yaml
   - flux-notifications
   - cloudflared
+  - cilium-lb
+  - traefik
+  - cert-manager

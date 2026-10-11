@@ -44,9 +44,10 @@ talos/
   secrets/       secrets.enc.yaml, SOPS/age encrypted
   generated/     rendered machine configs, gitignored
 kubernetes/
-  flux/          Flux entry point: operator, FluxInstance, the two top-level Kustomizations
-  infrastructure/  cluster add-ons Flux applies, e.g. the Intel GPU plugin
-  apps/          workloads Flux applies after infrastructure is healthy
+  flux/          Flux entry point: operator, FluxInstance, and the stages below in order
+  infrastructure/  controllers: GPU plugin, cloudflared, Traefik, cert-manager, LB IPs and BGP
+  infrastructure-config/  objects that need those controllers' CRDs: issuers, certificates
+  apps/          workloads: the blog, Homepage, the Flux UI route
   cni/           Cilium Helm values, still installed by hand
   backup/        in-cluster etcd backup job, not applied yet
 network/

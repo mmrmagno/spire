@@ -4,6 +4,8 @@ metadata:
   name: infrastructure
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: gateway-api
   interval: 10m
   retryInterval: 1m
   timeout: 5m

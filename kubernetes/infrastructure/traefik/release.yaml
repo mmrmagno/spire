@@ -1,0 +1,85 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: traefik
+spec:
+  interval: 1h
+  url: oci://ghcr.io/traefik/helm/traefik
+  ref:
+    tag: 41.7.1
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+spec:
+  interval: 1h
+  releaseName: traefik
+  chartRef:
+    kind: OCIRepository
+    name: traefik
+  values:
+    deployment:
+      replicas: 2
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
+    ingressClass:
+      enabled: false
+    providers:
+      kubernetesIngress:
+        enabled: false
+      kubernetesGateway:
+        enabled: true
+    gatewayClass:
+      enabled: true
+      name: traefik
+    gateway:
+      enabled: true
+      name: home
+      listeners:
+        web:
+          port: 8000
+          protocol: HTTP
+          namespacePolicy:
+            from: All
+        websecure:
+          port: 8443
+          protocol: HTTPS
+          hostname: "*.home.marc-os.com"
+          namespacePolicy:
+            from: All
+          certificateRefs:
+            - name: home-tls
+        websecure-apex:
+          port: 8443
+          protocol: HTTPS
+          hostname: home.marc-os.com
+          namespacePolicy:
+            from: All
+          certificateRefs:
+            - name: home-tls
+    api:
+      dashboard: false
+    ports:
+      web:
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
+    service:
+      annotations:
+        lbipam.cilium.io/ips: 10.10.20.10
+      spec:
+        externalTrafficPolicy: Local
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
