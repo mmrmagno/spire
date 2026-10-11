@@ -7,7 +7,7 @@ spec:
   secretName: home-tls
   issuerRef:
     kind: ClusterIssuer
-    name: letsencrypt-staging
+    name: letsencrypt-prod
   dnsNames:
     - home.marc-os.com
     - "*.home.marc-os.com"
