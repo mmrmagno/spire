@@ -7,6 +7,7 @@ resources:
   - gateway.yaml
   - networkpolicy.yaml
   - admission.yaml
+  - quota.yaml
 images:
   - name: GATEWAY_IMAGE
     newName: ghcr.io/mmrmagno/browcord-gateway

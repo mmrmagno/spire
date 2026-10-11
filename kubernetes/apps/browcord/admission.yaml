@@ -56,9 +56,30 @@ spec:
         (!has(variables.c.env) || variables.c.env.all(e, !has(e.valueFrom)))
       message: a room exposes no ports and reads no secrets
     - expression: >-
-        has(variables.c.resources.limits) &&
-        variables.c.resources.limits.memory == '4Gi' && variables.c.resources.limits.cpu == '2500m'
-      message: a room keeps its resource limits
+        has(variables.c.resources.limits) && has(variables.c.resources.requests) &&
+        variables.c.resources.limits.memory == '4Gi' && variables.c.resources.limits.cpu == '2500m' &&
+        variables.c.resources.requests.memory == '1Gi' && variables.c.resources.requests.cpu == '1'
+      message: a room keeps its resource requests and limits
+    - expression: >-
+        !has(variables.c.command) && !has(variables.c.args) &&
+        (!has(variables.c.env) || variables.c.env.all(e, e.name.startsWith('ROOM_') || e.name.startsWith('BROWCORD_')))
+      message: a room runs the image entrypoint with only ROOM_ and BROWCORD_ settings
+    - expression: >-
+        object.spec.securityContext.runAsUser == 10001 && object.spec.securityContext.runAsGroup == 10001 &&
+        !(has(variables.c.securityContext.runAsUser) && variables.c.securityContext.runAsUser != 10001)
+      message: a room runs as uid and gid 10001
+    - expression: >-
+        !has(object.spec.priorityClassName) && !has(object.spec.runtimeClassName) &&
+        !has(object.spec.hostAliases) && !has(object.spec.dnsConfig) &&
+        (!has(object.spec.dnsPolicy) || object.spec.dnsPolicy == 'ClusterFirst') &&
+        !(has(object.spec.shareProcessNamespace) && object.spec.shareProcessNamespace) &&
+        !has(object.spec.nodeSelector) && !has(object.spec.affinity) &&
+        has(object.spec.terminationGracePeriodSeconds) && object.spec.terminationGracePeriodSeconds <= 30
+      message: a room has no priority, runtime, dns, host alias, scheduling or grace overrides
+    - expression: >-
+        !has(object.spec.tolerations) ||
+        object.spec.tolerations.all(t, has(t.key) && t.key.startsWith('node.kubernetes.io/'))
+      message: a room only carries the default not-ready and unreachable tolerations
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding

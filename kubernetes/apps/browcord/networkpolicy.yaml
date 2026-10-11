@@ -138,3 +138,16 @@ spec:
               - 198.18.0.0/15
               - 224.0.0.0/4
               - 240.0.0.0/4
+      ports:
+        - {protocol: TCP, port: 80}
+        - {protocol: TCP, port: 443}
+        - {protocol: UDP, port: 443}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: browcord
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]

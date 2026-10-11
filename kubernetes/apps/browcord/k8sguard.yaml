@@ -71,7 +71,7 @@ spec:
             - {name: ROOM_FPS, value: "30"}
             - {name: ROOM_BITRATE_KBPS, value: "4000"}
             - {name: ROOM_ENCODER, value: vp8enc}
-            - {name: ROOM_START_URL, value: "https://www.testufo.com/"}
+            - {name: ROOM_START_URL, value: "https://duckduckgo.com"}
             - {name: ROOM_STALL_SECONDS, value: "30"}
             - name: GUARD_TOKEN
               valueFrom:
