@@ -1,0 +1,18 @@
+title: spire
+description: LAN services on spire
+theme: dark
+color: slate
+headerStyle: clean
+hideVersion: true
+disableUpdateCheck: true
+statusStyle: dot
+layout:
+  Cluster:
+    style: row
+    columns: 3
+  Network:
+    style: row
+    columns: 3
+  Links:
+    style: row
+    columns: 3

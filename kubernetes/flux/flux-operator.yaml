@@ -25,3 +25,12 @@ spec:
   chartRef:
     kind: OCIRepository
     name: flux-operator
+  values:
+    web:
+      config:
+        baseURL: https://flux.home.marc-os.com
+        authentication:
+          type: Anonymous
+          anonymous:
+            groups:
+              - flux-web-lan

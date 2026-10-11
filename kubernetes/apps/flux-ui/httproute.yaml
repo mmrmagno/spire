@@ -1,0 +1,23 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: flux-ui
+  namespace: flux-system
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Flux
+    gethomepage.dev/group: Cluster
+    gethomepage.dev/description: GitOps status, read only
+    gethomepage.dev/icon: flux-cd.svg
+    gethomepage.dev/pod-selector: app.kubernetes.io/name=flux-operator
+spec:
+  parentRefs:
+    - name: home
+      namespace: traefik
+      sectionName: websecure
+  hostnames:
+    - flux.home.marc-os.com
+  rules:
+    - backendRefs:
+        - name: flux-operator
+          port: 9080

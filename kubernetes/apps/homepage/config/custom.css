@@ -1,0 +1,58 @@
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Catppuccin Mocha, same tokens as marc-os.com */
+.theme-slate {
+  --color-50: 205 214 244;
+  --color-100: 186 194 222;
+  --color-200: 166 173 200;
+  --color-300: 147 153 178;
+  --color-400: 127 132 156;
+  --color-500: 108 112 134;
+  --color-600: 69 71 90;
+  --color-700: 49 50 68;
+  --color-800: 30 30 46;
+  --color-900: 24 24 37;
+  --color-logo-start: 166 227 161 / 20%;
+  --color-logo-stop: 148 226 213 / 40%;
+}
+
+html, body, #__next {
+  background-color: #1e1e2e !important;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+.service-card {
+  border: 1px solid #45475a;
+  border-radius: 6px;
+}
+.service-card:hover {
+  border-color: #a6e3a1;
+}
+
+.service-group-name,
+#information-widgets .greeting {
+  color: #a6e3a1 !important;
+}
+
+.service-name {
+  color: #cdd6f4;
+}
+
+.service-description {
+  color: #a6adc8;
+}
+
+a:hover .service-name {
+  color: #b4befe;
+}

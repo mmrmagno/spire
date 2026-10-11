@@ -1,0 +1,14 @@
+- Network:
+    - UDM:
+        href: https://192.168.0.1
+        description: house router
+        icon: ubiquiti-unifi.svg
+- Links:
+    - marc-os.com:
+        href: https://marc-os.com
+        description: the blog
+        icon: mdi-web
+    - spire repo:
+        href: https://github.com/mmrmagno/spire
+        description: everything Flux applies
+        icon: si-github-#cdd6f4

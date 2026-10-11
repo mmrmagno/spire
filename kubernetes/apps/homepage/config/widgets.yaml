@@ -1,0 +1,9 @@
+- greeting:
+    text_size: xl
+    text: spire
+- datetime:
+    text_size: md
+    format:
+      dateStyle: long
+      timeStyle: short
+      hour12: false
