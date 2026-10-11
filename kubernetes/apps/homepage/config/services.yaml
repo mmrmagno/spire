@@ -5,10 +5,10 @@
         icon: ubiquiti-unifi.svg
     - merchant:
         description: lab router, RB5009. ssh 10.10.10.1
-        icon: /icons/merchant.png
+        icon: /icons/merchant.webp
     - osty:
         description: 10G switch, CRS309. not live yet
-        icon: /icons/osty.png
+        icon: /icons/osty.webp
 - Links:
     - marc-os.com:
         href: https://marc-os.com

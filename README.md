@@ -18,12 +18,17 @@ server with Docker Compose, and the plan is to move all of them here.
 
 ## Hardware
 
-| Node | Hardware | RAM | Disks | Role |
-|---|---|---|---|---|
-| `architect` | Intel N100 mini PC | 16 GB | 1 TB NVMe, 800 GB SATA SSD | control plane |
-| `ironclad` | Minisforum MS-01, i9-13900H | 32 GB | 1 TB NVMe | worker, iGPU transcoding |
+| Node | Hardware | CPU | RAM | Disks | Role |
+|---|---|---|---|---|---|
+| `architect` | ZOTAC ZBOX CI337 nano | Intel N100, 4 cores | 16 GB DDR5 | 1 TB NVMe, 800 GB SATA SSD | control plane |
+| `ironclad` | Minisforum MS-01 | i9-13900H, 14 cores / 20 threads | 32 GB DDR5 | 1 TB NVMe | worker, iGPU transcoding |
 
-A second MS-01 is on order, plus a MikroTik router and a 10 GbE switch.
+| Device | Hardware | Role |
+|---|---|---|
+| `merchant` | MikroTik RB5009 | lab router, BGP peer for LoadBalancer IPs |
+| `osty` | MikroTik CRS309-1G-8S+IN | 10G SFP+ switch (not live yet) |
+
+A second MS-01 is on order.
 
 ## What runs on it
 
