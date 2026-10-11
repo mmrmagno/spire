@@ -2,6 +2,7 @@ tunnel: 382e380e-3852-46b7-976f-bddce10161c2
 credentials-file: /etc/cloudflared/creds/credentials.json
 metrics: 0.0.0.0:2000
 no-autoupdate: true
+protocol: http2
 ingress:
   - hostname: marc-os.com
     service: http://blog.blog.svc.cluster.local:8080
