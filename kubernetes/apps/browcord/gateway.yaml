@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: browcord-gateway
+  namespace: browcord
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: browcord-gateway
+  template:
+    metadata:
+      labels:
+        app: browcord-gateway
+    spec:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: gateway
+          image: GATEWAY_IMAGE
+          ports:
+            - {name: http, containerPort: 8080}
+            - {name: metrics, containerPort: 9464}
+          env:
+            - {name: BROWCORD_ADDR, value: ":8080"}
+            - {name: BROWCORD_STATIC, value: /app/web/dist}
+            - {name: BROWCORD_METRICS_ADDR, value: ":9464"}
+            - {name: BROWCORD_GUARD_URL, value: "http://browcord-k8sguard.browcord.svc.cluster.local:7070"}
+            - {name: BROWCORD_MULTI_IDLE, value: 60s}
+            - {name: BROWCORD_ROOM_CEILING, value: 6h}
+            - {name: BROWCORD_SESSION_TTL, value: 8h}
+            - {name: BROWCORD_INK_TTL, value: 15s}
+          envFrom:
+            - secretRef:
+                name: browcord-gateway
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          readinessProbe:
+            httpGet: {path: /api/health, port: http}
+          livenessProbe:
+            httpGet: {path: /api/health, port: http}
+            periodSeconds: 30
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 512Mi}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: tmp
+          emptyDir: {medium: Memory, sizeLimit: 16Mi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: browcord-gateway
+  namespace: browcord
+spec:
+  selector:
+    app: browcord-gateway
+  ports:
+    - {name: http, port: 8080, targetPort: http}

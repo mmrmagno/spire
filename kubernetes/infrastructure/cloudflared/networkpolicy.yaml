@@ -29,6 +29,15 @@ spec:
       ports:
         - {protocol: TCP, port: 8080}
     - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: browcord
+          podSelector:
+            matchLabels:
+              app: browcord-gateway
+      ports:
+        - {protocol: TCP, port: 8080}
+    - to:
         - ipBlock:
             cidr: 0.0.0.0/0
             except:

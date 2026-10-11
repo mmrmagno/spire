@@ -1,0 +1,73 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: browcord-room-shape
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [pods]
+  matchConditions:
+    - name: from-k8sguard
+      expression: request.userInfo.username == 'system:serviceaccount:browcord:browcord-k8sguard'
+  variables:
+    - name: c
+      expression: object.spec.containers[0]
+  validations:
+    - expression: request.operation == 'CREATE'
+      message: k8sguard may only create room pods
+    - expression: >-
+        object.spec.containers.size() == 1 &&
+        !has(object.spec.initContainers) && !has(object.spec.ephemeralContainers)
+      message: a room has exactly one container
+    - expression: >-
+        variables.c.image.matches('^ghcr\\.io/mmrmagno/browcord-room(:[A-Za-z0-9._-]+)?@sha256:[0-9a-f]{64}$')
+      message: a room must run the browcord room image, pinned by digest
+    - expression: >-
+        has(object.spec.hostUsers) && object.spec.hostUsers == false &&
+        !(has(object.spec.hostNetwork) && object.spec.hostNetwork) &&
+        !(has(object.spec.hostPID) && object.spec.hostPID) &&
+        !(has(object.spec.hostIPC) && object.spec.hostIPC) &&
+        !has(object.spec.nodeName)
+      message: a room gets its own user namespace and no host namespaces
+    - expression: >-
+        has(object.spec.securityContext.seccompProfile) &&
+        object.spec.securityContext.seccompProfile.type == 'Localhost' &&
+        object.spec.securityContext.seccompProfile.localhostProfile == 'profiles/browcord-chromium.json'
+      message: a room must use the browcord chromium seccomp profile
+    - expression: >-
+        has(object.spec.automountServiceAccountToken) && object.spec.automountServiceAccountToken == false &&
+        (!has(object.spec.volumes) || object.spec.volumes.all(v, has(v.emptyDir)))
+      message: a room has no service account token and only emptyDir volumes
+    - expression: >-
+        has(variables.c.securityContext) &&
+        variables.c.securityContext.readOnlyRootFilesystem == true &&
+        variables.c.securityContext.allowPrivilegeEscalation == false &&
+        !(has(variables.c.securityContext.privileged) && variables.c.securityContext.privileged) &&
+        !has(variables.c.securityContext.capabilities.add) &&
+        'ALL' in variables.c.securityContext.capabilities.drop
+      message: a room container is read only, unprivileged and drops all capabilities
+    - expression: >-
+        (!has(variables.c.ports) || variables.c.ports.size() == 0) &&
+        !has(variables.c.envFrom) &&
+        (!has(variables.c.env) || variables.c.env.all(e, !has(e.valueFrom)))
+      message: a room exposes no ports and reads no secrets
+    - expression: >-
+        has(variables.c.resources.limits) &&
+        variables.c.resources.limits.memory == '4Gi' && variables.c.resources.limits.cpu == '2500m'
+      message: a room keeps its resource limits
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: browcord-room-shape
+spec:
+  policyName: browcord-room-shape
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: browcord-rooms

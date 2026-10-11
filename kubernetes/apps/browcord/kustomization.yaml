@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - secret.enc.yaml
+  - k8sguard.yaml
+  - gateway.yaml
+  - networkpolicy.yaml
+  - admission.yaml
+images:
+  - name: GATEWAY_IMAGE
+    newName: ghcr.io/mmrmagno/browcord-gateway
+    newTag: k8s
+    digest: sha256:16bf9292ee5cdba5ed481e4c51d8798596fb1d479bba3aa416a35783e09273cd
