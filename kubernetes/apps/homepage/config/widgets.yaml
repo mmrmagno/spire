@@ -7,3 +7,15 @@
       dateStyle: long
       timeStyle: short
       hour12: false
+- kubernetes:
+    cluster:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+      label: spire
+    nodes:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
