@@ -39,3 +39,6 @@ hubble:
 
 operator:
   replicas: 1
+
+bgpControlPlane:
+  enabled: true

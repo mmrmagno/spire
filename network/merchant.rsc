@@ -48,6 +48,18 @@ add address=192.168.88.1/24 interface=ether8
 /ip route
 add dst-address=0.0.0.0/0 gateway=192.168.0.1
 
+# Cilium on the workers advertises LoadBalancer /32s from 10.10.20.0/24. Accept only those.
+/routing filter rule
+add chain=k8s-in rule="if (dst in 10.10.20.0/24 && dst-len==32) { accept }" comment="spire LB IPs only"
+add chain=k8s-in rule="reject"
+/routing bgp instance
+add name=lab as=64512 router-id=10.10.10.1
+/routing bgp template
+add name=k8s input.filter=k8s-in
+/routing bgp connection
+add name=ironclad instance=lab templates=k8s remote.address=10.10.10.21 remote.as=64513 \
+    local.role=ebgp local.address=10.10.10.1
+
 /ip pool
 add name=lab-pool ranges=10.10.10.100-10.10.10.199
 add name=bg-pool ranges=192.168.88.100-192.168.88.199
@@ -98,10 +110,8 @@ add chain=forward action=fasttrack-connection connection-state=established,relat
 add chain=forward action=accept connection-state=established,related,untracked
 add chain=forward action=drop connection-state=invalid
 add chain=forward action=accept in-interface-list=LAN comment="lab to anywhere"
-# Not reachable yet: 10.10.20.0/24 has no route until Cilium peers over BGP. The rule and the
-# input accept for tcp/179 below are deliberately in place ahead of that work.
 add chain=forward action=accept src-address=192.168.0.0/24 dst-address=10.10.20.0/24 \
-    comment="house to LoadBalancer services, pending BGP"
+    comment="house to LoadBalancer services"
 add chain=forward action=accept src-address-list=mgmt dst-address=10.10.10.0/24
 add chain=forward action=accept src-address=192.168.88.0/24 dst-address=10.10.10.0/24 \
     comment="break-glass can reach the nodes, not just the router"
