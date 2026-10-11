@@ -85,7 +85,7 @@ scripts/
   gen-network.sh     renders the gateway and switch configs
   bootstrap-flux.sh  installs the Flux Operator and hands the cluster to git
   etcd-snapshot.sh   manual encrypted etcd snapshot
-  network-backup.sh  encrypted off-device config export
+  network-backup.sh  encrypted router config export, copied to Proton Drive
 ```
 
 Rendered machine configs are never committed. They contain the cluster CA and join tokens,

@@ -15,10 +15,9 @@ KEEP="${ROUTER_BACKUP_KEEP:-10}"
 
 [ -n "$HOST" ] || { echo "usage: $0 <user@host> [name]" >&2; exit 2; }
 
-RECIPIENTS="$(grep -oE 'age1[0-9a-z]+' "$REPO/.sops.yaml" | sort -u)"
-[ "$(printf '%s\n' "$RECIPIENTS" | grep -c .)" -eq 1 ] || { echo ".sops.yaml has more than one age recipient, pick one explicitly" >&2; exit 1; }
-RECIPIENT="$RECIPIENTS"
-[ -n "$RECIPIENT" ] || { echo "no age recipient found in .sops.yaml" >&2; exit 1; }
+REMOTE="${SPIRE_NETWORK_REMOTE:-proton:Spire/network}"
+RECIPIENT="$(grep -oE '&workstation age1[0-9a-z]+' "$REPO/.sops.yaml" | awk '{print $2}')"
+[ -n "$RECIPIENT" ] || { echo "no &workstation age recipient in .sops.yaml" >&2; exit 1; }
 
 umask 077
 mkdir -p "$DEST"
@@ -35,6 +34,10 @@ ssh "$HOST" '/export terse show-sensitive' > "$WORK/export.rsc"
 age -r "$RECIPIENT" -o "$WORK/out.age" "$WORK/export.rsc"
 mv "$WORK/out.age" "$OUT"
 echo "wrote $OUT"
+if [ "$REMOTE" != "none" ]; then
+  rclone copy "$OUT" "$REMOTE/"
+  echo "uploaded: $REMOTE/$(basename "$OUT")"
+fi
 
 mapfile -t OLD < <(find "$DEST" -maxdepth 1 -name "${NAME}-*.rsc.age" -printf '%f\n' | sort -r | tail -n "+$((KEEP + 1))")
 for f in "${OLD[@]:-}"; do

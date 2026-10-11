@@ -13,8 +13,8 @@ export TALOSCONFIG="${TALOSCONFIG:-$REPO/talos/generated/talosconfig}"
 
 [ -f "$TALOSCONFIG" ] || { echo "missing $TALOSCONFIG, run scripts/gen-configs.sh first" >&2; exit 1; }
 
-RECIPIENT="$(grep -oE 'age1[0-9a-z]+' "$REPO/.sops.yaml" | head -1)"
-[ -n "$RECIPIENT" ] || { echo "no age recipient found in .sops.yaml" >&2; exit 1; }
+RECIPIENT="$(grep -oE '&workstation age1[0-9a-z]+' "$REPO/.sops.yaml" | awk '{print $2}')"
+[ -n "$RECIPIENT" ] || { echo "no &workstation age recipient in .sops.yaml" >&2; exit 1; }
 
 umask 077
 mkdir -p "$DEST"
