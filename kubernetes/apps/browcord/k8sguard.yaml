@@ -55,12 +55,12 @@ spec:
           type: RuntimeDefault
       containers:
         - name: k8sguard
-          image: ghcr.io/mmrmagno/browcord-gateway:latest@sha256:48e387661b0c0c88cac35de44a5311dd8b111e54b3015920b436a050e3773d99
+          image: ghcr.io/mmrmagno/browcord-gateway:latest@sha256:f8ce51007da27f251d515cd30d6c66ff4cc61330f3bfdb6b4656329204dd2ceb
           command: [/app/k8sguard]
           ports:
             - {name: http, containerPort: 7070}
           env:
-            - {name: ROOM_IMAGE, value: "ghcr.io/mmrmagno/browcord-room:latest@sha256:4a4910abde89bc4fc4370a8d12278badde6a899cf1ea4cf82d4eef48dd1b5aa9"}
+            - {name: ROOM_IMAGE, value: "ghcr.io/mmrmagno/browcord-room:latest@sha256:c9f8ddccb3375f966e44a170276257bac5343da10c8a29a0562d80368036db60"}
             - {name: ROOM_NAMESPACE, value: browcord-rooms}
             - {name: ROOM_GATEWAY_URL, value: "ws://browcord-gateway.browcord.svc.cluster.local:8080"}
             - {name: ROOM_SECCOMP_PROFILE, value: profiles/browcord-chromium.json}
