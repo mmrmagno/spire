@@ -7,6 +7,11 @@ ingress:
     service: http://blog.blog.svc.cluster.local:8080
   - hostname: www.marc-os.com
     service: http://blog.blog.svc.cluster.local:8080
+  - hostname: browcord.marc-os.com
+    path: ^/(\.proxy/)?(agent|api/stats)
+    service: http_status:404
+  - hostname: browcord.marc-os.com
+    service: http://browcord-gateway.browcord.svc.cluster.local:8080
   - hostname: browcord-next.marc-os.com
     path: ^/(\.proxy/)?(agent|api/stats)
     service: http_status:404
