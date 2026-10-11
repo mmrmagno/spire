@@ -65,6 +65,8 @@ kind: Service
 metadata:
   name: browcord-gateway
   namespace: browcord
+  labels:
+    app: browcord-gateway
 spec:
   selector:
     app: browcord-gateway
