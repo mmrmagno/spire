@@ -38,6 +38,15 @@ spec:
       ports:
         - {protocol: TCP, port: 8080}
     - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: valart
+          podSelector:
+            matchExpressions:
+              - {key: app, operator: In, values: [valart, valart-submit]}
+      ports:
+        - {protocol: TCP, port: 8080}
+    - to:
         - ipBlock:
             cidr: 0.0.0.0/0
             except:

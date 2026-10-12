@@ -13,4 +13,9 @@ ingress:
     service: http_status:404
   - hostname: browcord.marc-os.com
     service: http://browcord-gateway.browcord.svc.cluster.local:8080
+  - hostname: val.marc-os.com
+    path: ^/api/submit$
+    service: http://valart-submit.valart.svc.cluster.local:8080
+  - hostname: val.marc-os.com
+    service: http://valart.valart.svc.cluster.local:8080
   - service: http_status:404

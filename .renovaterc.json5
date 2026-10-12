@@ -38,6 +38,13 @@
       automerge: true,
     },
     {
+      description: "valart ships as soon as CI publishes it, like the blog",
+      matchPackageNames: ["ghcr.io/mmrmagno/valart", "ghcr.io/mmrmagno/valart-submit"],
+      groupName: "valart",
+      schedule: ["at any time"],
+      automerge: true,
+    },
+    {
       description: "browcord restarts the gateway and kicks viewers, so it only ships at night",
       matchPackageNames: ["ghcr.io/mmrmagno/browcord-gateway", "ghcr.io/mmrmagno/browcord-room"],
       groupName: "browcord",
