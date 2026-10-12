@@ -45,8 +45,20 @@ spec:
       enabled: false
     kubeProxy:
       enabled: false
+    nodeExporter:
+      operatingSystems:
+        aix:
+          enabled: false
+        darwin:
+          enabled: false
     prometheus-node-exporter:
       namespaceOverride: monitoring-node
+      prometheus:
+        monitor:
+          relabelings:
+            - sourceLabels: [__meta_kubernetes_pod_node_name]
+              targetLabel: instance
+              action: replace
     alertmanager:
       config:
         global:
