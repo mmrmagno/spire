@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background -->
+  <rect width="32" height="32" rx="4" fill="#0F1923" />
+  
+  <!-- Main V shape -->
+  <path d="M6 6 L16 26 L26 6" stroke="#FF4655" stroke-width="4" stroke-linejoin="bevel" fill="none" />
+  
+  <!-- Additional accent elements -->
+  <path d="M10 6 L16 18 L22 6" stroke="#FF4655" stroke-width="1.5" fill="none" />
+  
+  <!-- Top line accent -->
+  <line x1="6" y1="6" x2="26" y2="6" stroke="#FF4655" stroke-width="1" />
+</svg> 

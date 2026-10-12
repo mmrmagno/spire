@@ -28,3 +28,4 @@ configMapGenerator:
     files:
       - icons/merchant.webp
       - icons/osty.webp
+      - icons/valart.svg

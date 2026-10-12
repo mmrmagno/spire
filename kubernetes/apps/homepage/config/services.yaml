@@ -9,12 +9,34 @@
     - osty:
         description: 10G switch, CRS309. not live yet
         icon: /icons/osty.webp
-- Links:
+- Public:
     - marc-os.com:
         href: https://marc-os.com
-        description: the blog
+        description: the blog, via the tunnel
         icon: mdi-web
+        namespace: blog
+        podSelector: app=blog
+        siteMonitor: https://marc-os.com
+    - browcord:
+        href: https://browcord.marc-os.com
+        description: shared browser in Discord calls
+        icon: si-discord-#cdd6f4
+        namespace: browcord
+        podSelector: app=browcord-gateway
+        siteMonitor: https://browcord.marc-os.com
+    - valart:
+        href: https://val.marc-os.com
+        description: ascii art gallery
+        icon: /icons/valart.svg
+        namespace: valart
+        podSelector: app=valart
+        siteMonitor: https://val.marc-os.com
+- Links:
     - spire repo:
         href: https://github.com/mmrmagno/spire
         description: everything Flux applies
+        icon: si-github-#cdd6f4
+    - kb repo:
+        href: https://github.com/mmrmagno/kb
+        description: working docs, private
         icon: si-github-#cdd6f4

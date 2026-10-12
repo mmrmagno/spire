@@ -11,5 +11,7 @@ layout:
     style: column
   Network:
     style: column
+  Public:
+    style: column
   Links:
     style: column
