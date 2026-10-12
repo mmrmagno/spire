@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kb
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Knowledge base
+    gethomepage.dev/group: Cluster
+    gethomepage.dev/description: Working docs for every project
+    gethomepage.dev/icon: mdi-book-open-page-variant
+    gethomepage.dev/pod-selector: app=kb
+spec:
+  parentRefs:
+    - name: home
+      namespace: traefik
+      sectionName: websecure
+  hostnames:
+    - kb.home.marc-os.com
+  rules:
+    - backendRefs:
+        - name: kb
+          port: 8080
