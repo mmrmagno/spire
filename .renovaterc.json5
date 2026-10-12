@@ -21,6 +21,15 @@
       datasourceTemplate: "docker",
     },
   ],
+  hostRules: [
+    {
+      description: "Read the private kb image; the token lives in the Mend portal, never in this repo",
+      matchHost: "ghcr.io",
+      hostType: "docker",
+      username: "mmrmagno",
+      password: "{{ secrets.GHCR_READ_TOKEN }}",
+    },
+  ],
   packageRules: [
     {
       matchManagers: ["flux"],
