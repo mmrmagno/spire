@@ -21,6 +21,14 @@
       datasourceTemplate: "docker",
     },
   ],
+  hostRules: [
+    {
+      matchHost: "ghcr.io",
+      hostType: "docker",
+      username: "mmrmagno",
+      password: "{{ secrets.GHCR_READ_TOKEN }}",
+    },
+  ],
   packageRules: [
     {
       matchManagers: ["flux"],
