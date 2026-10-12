@@ -47,19 +47,6 @@ A second MS-01 is on order.
 - **Cloudflare Tunnel** for the public sites, so nothing listens on the home WAN.
 - **Homepage** as the start page for everything on the LAN, built from HTTPRoute annotations.
 
-## Deploying an app
-
-1. Make `kubernetes/apps/<app>/` with a namespace (Pod Security `restricted`), a Deployment
-   with the image pinned by digest, a Service, a NetworkPolicy and a kustomization. Copy `blog/`
-   for a public site or `homepage/` for a LAN app.
-2. LAN app: add an HTTPRoute on the `home` Gateway with a `*.home` hostname. TLS and the
-   Homepage tile come for free. Public app: add the hostname to the tunnel config instead.
-3. Secrets go in a `*.enc.yaml`, encrypted with `sops --encrypt --in-place`.
-4. List the folder in `kubernetes/apps/kustomization.yaml`, commit, push. Flux applies it within
-   a minute, and a failed reconcile pings Discord.
-
-Removing the folder removes the app; Flux prunes it.
-
 ## Layout
 
 ```
