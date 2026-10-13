@@ -53,6 +53,12 @@ for n in "${NODES[@]}"; do
     PATCH_FLAG=--config-patch-worker
     EXTRA=()
   fi
+  for s in talos/secrets/"${n}"-*.enc.yaml; do
+    [ -e "$s" ] || continue
+    plain="$WORK/$(basename "$s" .enc.yaml).yaml"
+    sops -d "$s" > "$plain"
+    EXTRA+=("$PATCH_FLAG" "@$plain")
+  done
   rm -f "talos/generated/${n}.yaml"
   talosctl gen config "$CLUSTER" "$ENDPOINT" \
     --with-secrets "$WORK/secrets.yaml" \

@@ -1,0 +1,19 @@
+{
+	"tagOwners": {
+		"tag:spire": ["autogroup:admin"],
+	},
+
+	"autoApprovers": {
+		"routes": {
+			"10.10.0.0/16": ["tag:spire"],
+		},
+	},
+
+	"grants": [
+		{
+			"src": ["autogroup:member"],
+			"dst": ["10.10.0.0/16"],
+			"ip":  ["*"],
+		},
+	],
+}

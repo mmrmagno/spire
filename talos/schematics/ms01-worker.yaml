@@ -3,5 +3,6 @@ customization:
     officialExtensions:
       - siderolabs/intel-ucode
       - siderolabs/i915
+      - siderolabs/tailscale
       - siderolabs/iscsi-tools
       - siderolabs/util-linux-tools

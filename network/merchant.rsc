@@ -109,6 +109,8 @@ add chain=input action=drop
 add chain=forward action=fasttrack-connection connection-state=established,related
 add chain=forward action=accept connection-state=established,related,untracked
 add chain=forward action=drop connection-state=invalid
+add chain=forward action=drop in-interface-list=LAN dst-address=192.168.0.0/16 \
+    comment="lab never opens connections into the house"
 add chain=forward action=accept in-interface-list=LAN comment="lab to anywhere"
 add chain=forward action=accept src-address=192.168.0.0/24 dst-address=10.10.20.0/24 \
     comment="house to LoadBalancer services"
