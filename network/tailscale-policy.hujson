@@ -11,9 +11,19 @@
 
 	"grants": [
 		{
-			"src": ["autogroup:member"],
-			"dst": ["10.10.0.0/16"],
-			"ip":  ["*"],
+			"src": ["autogroup:owner"],
+			"dst": ["10.10.10.0/24"],
+			"ip":  ["tcp:22", "tcp:8291", "tcp:6443", "tcp:50000", "icmp:*"],
+		},
+		{
+			"src": ["autogroup:owner"],
+			"dst": ["10.10.10.1"],
+			"ip":  ["udp:53", "tcp:53"],
+		},
+		{
+			"src": ["autogroup:owner"],
+			"dst": ["10.10.20.0/24"],
+			"ip":  ["tcp:80", "tcp:443", "icmp:*"],
 		},
 	],
 }
