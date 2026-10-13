@@ -24,7 +24,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: kb
-          image: ghcr.io/mmrmagno/kb:latest@sha256:96ca19601eccdf73f7780c4b05fcdb23e4147382a78f77c32a5ff29fdafa0baf
+          image: ghcr.io/mmrmagno/kb:latest@sha256:c11a2dca94e65cbbc9a177bc15a54754794afd2cfe4870964b4201994e11c669
           ports:
             - name: http
               containerPort: 8080
