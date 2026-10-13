@@ -102,6 +102,8 @@ add chain=input action=accept src-address-list=mgmt protocol=tcp dst-port=22,829
 # /ip service address= is checked only after the firewall has already accepted the packet.
 add chain=input action=accept in-interface-list=LAN protocol=tcp dst-port=22,8291 \
     comment="management from the lab subnet"
+add chain=input action=drop in-interface-list=LAN protocol=udp dst-port=1900,5351 \
+    comment="tailscale port-mapping probes, drop quietly"
 add chain=input action=log log-prefix="in-drop" limit=10,5:packet
 add chain=input action=drop
 
