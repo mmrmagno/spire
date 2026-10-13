@@ -22,7 +22,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: nginx
-          image: ghcr.io/mmrmagno/valart:latest@sha256:12670fed7a84b9f3c89db2b632ad1ad7cc15ba5b0a73c6de404a398d721333cc
+          image: ghcr.io/mmrmagno/valart:latest@sha256:b8aa4d4ad7e4ff81348fd572009f0602253a6f5189ab6f099f02ff35f51fed59
           ports:
             - name: http
               containerPort: 8080

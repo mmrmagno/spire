@@ -23,7 +23,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: submit
-          image: ghcr.io/mmrmagno/valart-submit:latest@sha256:fe4a1625ce42038d9d5a3f7e2acf56474c8abc8e1a121cfd7a617016b12481b0
+          image: ghcr.io/mmrmagno/valart-submit:latest@sha256:7e66578ea7a14829592d89bda9a42f63d89ea3eb313082320aa5558093136664
           ports:
             - name: http
               containerPort: 8080
