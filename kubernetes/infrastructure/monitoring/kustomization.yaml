@@ -6,3 +6,4 @@ resources:
   - alertmanager-discord.enc.yaml
   - release.yaml
   - httproute.yaml
+  - networkpolicy.yaml

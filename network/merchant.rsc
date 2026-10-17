@@ -145,6 +145,7 @@ set winbox address=REPLACE_MGMT_HOST/32,192.168.88.0/24,10.10.10.0/24
 /ip neighbor discovery-settings set discover-interface-list=MGMT
 # ddns-enabled only accepts yes or auto on 7.23.8, so auto (the default) is as off as it gets.
 /ip cloud set update-time=no
+/system package update set channel=long-term
 /ip proxy set enabled=no
 /ip socks set enabled=no
 /ip upnp set enabled=no

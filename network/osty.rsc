@@ -32,6 +32,11 @@ add bridge=bridge-fabric interface=sfp-sfpplus8 pvid=10
 add bridge=bridge-fabric vlan-ids=10 tagged=sfp-sfpplus1 \
     untagged=sfp-sfpplus2,sfp-sfpplus3,sfp-sfpplus4,sfp-sfpplus5,sfp-sfpplus6,sfp-sfpplus7,sfp-sfpplus8
 
+/interface list
+add name=MGMT
+/interface list member
+add interface=ether1 list=MGMT
+
 /ip address
 add address=10.10.10.2/24 interface=ether1
 
@@ -54,13 +59,14 @@ set winbox address=10.10.10.0/24,REPLACE_MGMT_HOST/32
 /ip ssh set strong-crypto=yes host-key-type=ed25519
 
 /tool mac-server set allowed-interface-list=none
-# mac-winbox stays on: it is the only way back in if the bridge config strands ether1.
-/tool mac-server mac-winbox set allowed-interface-list=all
+# mac-winbox stays on ether1 only: the way back in if an IP mistake strands management, never from the node ports.
+/tool mac-server mac-winbox set allowed-interface-list=MGMT
 /tool mac-server ping set enabled=no
 /tool bandwidth-server set enabled=no
 /ip neighbor discovery-settings set discover-interface-list=none
 # ddns-enabled only accepts yes or auto on 7.23.8, so auto (the default) is as off as it gets.
 /ip cloud set update-time=no
+/system package update set channel=long-term
 
 # Cosmetic, and last on purpose: /import halts on the first failing line, so nothing
 # non-essential may run before management addressing exists.
