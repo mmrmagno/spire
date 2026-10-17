@@ -53,7 +53,7 @@ add dst-address=0.0.0.0/0 gateway=192.168.0.1
 add chain=k8s-in rule="if (dst in 10.10.20.0/24 && dst-len==32) { accept }" comment="spire LB IPs only"
 add chain=k8s-in rule="reject"
 /routing bgp instance
-add name=lab as=64512 router-id=10.10.10.1
+add name=lab as=64512 router-id=10.10.10.1 multipath=2
 /routing bgp template
 add name=k8s input.filter=k8s-in
 /routing bgp connection
