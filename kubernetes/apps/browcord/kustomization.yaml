@@ -9,3 +9,4 @@ resources:
   - admission.yaml
   - quota.yaml
   - monitoring.yaml
+  - dashboard.yaml
