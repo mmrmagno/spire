@@ -59,6 +59,8 @@ add name=k8s input.filter=k8s-in
 /routing bgp connection
 add name=ironclad instance=lab templates=k8s remote.address=10.10.10.21 remote.as=64513 \
     local.role=ebgp local.address=10.10.10.1
+add name=regent instance=lab templates=k8s remote.address=10.10.10.22 remote.as=64513 \
+    local.role=ebgp local.address=10.10.10.1
 
 /ip pool
 add name=lab-pool ranges=10.10.10.100-10.10.10.199
@@ -77,6 +79,7 @@ add address=192.168.88.0/24 gateway=192.168.88.1 dns-server=192.168.88.1
 /ip dhcp-server lease
 add mac-address=REPLACE_ARCHITECT_MAC address=10.10.10.11 server=lab comment=architect
 add mac-address=REPLACE_IRONCLAD_MAC address=10.10.10.21 server=lab comment=ironclad
+add mac-address=REPLACE_REGENT_MAC address=10.10.10.22 server=lab comment=regent
 
 /ip dns set servers=192.168.0.1 allow-remote-requests=yes
 

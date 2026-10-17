@@ -13,7 +13,7 @@ umask 077
 
 cd "$REPO"
 
-usage() { echo "usage: $0 architect|ironclad|all" >&2; exit 2; }
+usage() { echo "usage: $0 architect|ironclad|regent|all" >&2; exit 2; }
 
 [ $# -eq 1 ] || usage
 TARGET="$1"
@@ -21,7 +21,8 @@ TARGET="$1"
 case "$TARGET" in
   architect) NODES=(architect) ;;
   ironclad)  NODES=(ironclad) ;;
-  all)       NODES=(architect ironclad) ;;
+  regent)    NODES=(regent) ;;
+  all)       NODES=(architect ironclad regent) ;;
   *)         usage ;;
 esac
 
