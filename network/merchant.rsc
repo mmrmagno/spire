@@ -12,7 +12,7 @@
 /system identity set name=merchant
 
 /interface bridge
-add name=bridge-lab vlan-filtering=no
+add name=bridge-lab vlan-filtering=no priority=0x4000
 
 /interface list
 add name=WAN

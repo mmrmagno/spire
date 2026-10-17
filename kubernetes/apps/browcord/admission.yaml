@@ -58,10 +58,8 @@ spec:
     - expression: >-
         has(variables.c.resources.limits) && has(variables.c.resources.requests) &&
         variables.c.resources.limits.memory == '4Gi' &&
-        ((variables.c.resources.limits.cpu == '4' && variables.c.resources.requests.cpu == '4' &&
-          variables.c.resources.requests.memory == '4Gi') ||
-         (variables.c.resources.limits.cpu == '2500m' && variables.c.resources.requests.cpu == '1' &&
-          variables.c.resources.requests.memory == '1Gi'))
+        variables.c.resources.limits.cpu == '4' && variables.c.resources.requests.cpu == '4' &&
+        variables.c.resources.requests.memory == '4Gi'
       message: a room keeps its resource requests and limits
     - expression: >-
         !has(variables.c.command) && !has(variables.c.args) &&
