@@ -6,7 +6,7 @@ auto: "off"
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
 installer:
-  image: factory.talos.dev/metal-installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8:v1.14.1
+  image: factory.talos.dev/metal-installer/2d61dd07b20062062ea671b4d01873506103b67c0f7a4c3fb6cf4ee85585dcb8:v1.14.4
 provisioning:
   diskSelector:
     match: '"/dev/disk/by-id/nvme-Corsair_MP600_MICRO_A828B452002PJ7" in disk.symlinks'

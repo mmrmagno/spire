@@ -6,7 +6,7 @@ auto: "off"
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
 installer:
-  image: factory.talos.dev/metal-installer/237f103eb48dd132f645796b44d065118994d8c4755af776283576b7de8c0f85:v1.14.1
+  image: factory.talos.dev/metal-installer/237f103eb48dd132f645796b44d065118994d8c4755af776283576b7de8c0f85:v1.14.4
 provisioning:
   diskSelector:
     match: '"/dev/disk/by-id/nvme-KINGSTON_OM8TAP41024K1-A00_50026B73843CD371" in disk.symlinks'

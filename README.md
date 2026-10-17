@@ -33,7 +33,7 @@ Two more MS-01s are planned.
 
 ## What runs on it
 
-- **Talos Linux v1.14.1** with upstream Kubernetes v1.37.
+- **Talos Linux v1.14.4** with upstream Kubernetes v1.37.
 - **Cilium** as the CNI, replacing kube-proxy entirely, with Hubble for seeing what talks
   to what.
 - **Intel GPU device plugin**, so pods on the MS-01 workers can claim a share of the iGPU for
