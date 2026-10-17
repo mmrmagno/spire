@@ -1,7 +1,7 @@
 # Spire
 
 Spire is my homelab Kubernetes cluster, and this repo is everything needed to rebuild it
-from scratch. Talos Linux on bare metal, two nodes for now, more on the way.
+from scratch. Talos Linux on bare metal, three nodes for now, more on the way.
 
 The shape is simple: patches and encrypted secrets go in, one script renders the machine
 configs, `talosctl` applies them. Nothing on the nodes is configured by hand, because Talos
@@ -22,20 +22,21 @@ server with Docker Compose, and the plan is to move all of them here.
 |---|---|---|---|---|---|
 | `architect` | ZOTAC ZBOX CI337 nano | Intel N100, 4 cores | 16 GB DDR5 | 1 TB NVMe, 800 GB SATA SSD | control plane |
 | `ironclad` | Minisforum MS-01 | i9-13900H, 14 cores / 20 threads | 32 GB DDR5 | 1 TB NVMe | worker, iGPU transcoding |
+| `regent` | Minisforum MS-01 | i9-13900H, 14 cores / 20 threads | 32 GB DDR5 | 1 TB NVMe | worker |
 
 | Device | Hardware | Role |
 |---|---|---|
 | `merchant` | MikroTik RB5009 | lab router, BGP peer for LoadBalancer IPs |
-| `osty` | MikroTik CRS309-1G-8S+IN | 10G SFP+ switch (not live yet) |
+| `osty` | MikroTik CRS309-1G-8S+IN | 10G SFP+ switch |
 
-A second MS-01 is on order.
+Two more MS-01s are planned.
 
 ## What runs on it
 
 - **Talos Linux v1.14.1** with upstream Kubernetes v1.37.
 - **Cilium** as the CNI, replacing kube-proxy entirely, with Hubble for seeing what talks
   to what.
-- **Intel GPU device plugin**, so pods on `ironclad` can claim a share of the iGPU for
+- **Intel GPU device plugin**, so pods on the MS-01 workers can claim a share of the iGPU for
   hardware transcoding.
 - **SOPS and age** for secrets. Every secret in the repo is a `*.enc.yaml`, encrypted; Flux holds
   its own age key and decrypts in the cluster.
