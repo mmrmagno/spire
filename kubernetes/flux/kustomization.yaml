@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - flux-operator.yaml
   - flux-instance.yaml
+  - cni.yaml
   - gateway-api.yaml
   - kubelet-cert-approver.yaml
   - infrastructure.yaml

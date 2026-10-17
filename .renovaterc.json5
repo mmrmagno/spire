@@ -40,6 +40,11 @@
       automerge: true,
     },
     {
+      description: "Cilium is the network for every node, so even its patches wait for a human",
+      matchPackageNames: ["cilium"],
+      automerge: false,
+    },
+    {
       description: "The blog ships as soon as CI publishes it",
       matchPackageNames: ["ghcr.io/mmrmagno/marc-os-blog"],
       schedule: ["at any time"],

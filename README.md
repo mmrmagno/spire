@@ -47,6 +47,8 @@ Two more MS-01s are planned.
   certificate over Cloudflare DNS-01 for the LAN-only names.
 - **Cloudflare Tunnel** for the public sites, so nothing listens on the home WAN.
 - **Homepage** as the start page for everything on the LAN, built from HTTPRoute annotations.
+- **kube-prometheus-stack** for metrics and alerts. Alerts land in Discord.
+- **Tailscale** on the workers, so I can reach the LAN side from anywhere without opening a port.
 
 ## Layout
 
@@ -58,10 +60,10 @@ talos/
   generated/     rendered machine configs, gitignored
 kubernetes/
   flux/          Flux entry point: operator, FluxInstance, and the stages below in order
-  infrastructure/  controllers: GPU plugin, cloudflared, Traefik, cert-manager, LB IPs and BGP
+  infrastructure/  controllers: GPU plugin, cloudflared, Traefik, cert-manager, monitoring, BGP
   infrastructure-config/  objects that need those controllers' CRDs: issuers, certificates
-  apps/          workloads: the blog, Homepage, the Flux UI route
-  cni/           Cilium Helm values, still installed by hand
+  apps/          workloads: the blog, browcord, valart, my notes site, Homepage, the Flux UI route
+  cni/           Cilium, installed by hand once at bootstrap, then managed by Flux
   backup/        in-cluster etcd backup job, not applied yet
 network/
   merchant.rsc     RouterOS config for the RB5009 gateway
@@ -93,7 +95,9 @@ scripts/bootstrap-flux.sh
 
 Everything after Cilium comes from git. The bootstrap script only installs the Flux
 Operator and the age key Flux decrypts secrets with, then the FluxInstance pulls the rest
-from this repo.
+from this repo. Cilium is installed by hand only because nothing runs before the cluster has
+a network, Flux included. Once Flux is up it adopts the release, and from then on Cilium
+changes through git like everything else.
 
 The router is rebuilt the same way, from a reset rather than a backup:
 
@@ -114,8 +118,8 @@ disks, and device names can swap between boots.
 
 ## What is next
 
-- **browcord** moved over and made Kubernetes native: one pod per room instead of containers
-  started through a Docker socket proxy.
+- **The rest of the cloud server.** The blog, browcord and valart already run here.
+- **10G for every node** through the switch, instead of the 1G copper they use today.
 - **Rook/Ceph** for replicated storage, once every MS-01 has a second NVMe for it.
 - **Real backups** before anything stateful moves in.
 
