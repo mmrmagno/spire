@@ -18,6 +18,27 @@ spec:
     type: kubernetes
     networkPolicy: true
     domain: cluster.local
+  kustomize:
+    patches:
+      - target:
+          kind: NetworkPolicy
+          name: allow-scraping
+        patch: |
+          - op: replace
+            path: /spec/ingress/0/from
+            value:
+              - namespaceSelector:
+                  matchLabels:
+                    kubernetes.io/metadata.name: monitoring
+      - target:
+          kind: NetworkPolicy
+          name: allow-webhooks
+        patch: |
+          $patch: delete
+          apiVersion: networking.k8s.io/v1
+          kind: NetworkPolicy
+          metadata:
+            name: allow-webhooks
   sync:
     kind: GitRepository
     url: https://github.com/mmrmagno/spire.git

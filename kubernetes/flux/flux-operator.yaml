@@ -25,6 +25,22 @@ spec:
   chartRef:
     kind: OCIRepository
     name: flux-operator
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: NetworkPolicy
+              name: flux-operator-web
+            patch: |
+              - op: replace
+                path: /spec/ingress/0/from
+                value:
+                  - namespaceSelector:
+                      matchLabels:
+                        kubernetes.io/metadata.name: traefik
+                    podSelector:
+                      matchLabels:
+                        app.kubernetes.io/name: traefik
   values:
     web:
       config:

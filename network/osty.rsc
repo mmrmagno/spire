@@ -9,9 +9,6 @@
 #   /user ssh-keys import public-key-file=<you>.pub user=<you>
 # prove key login in a second session, then once the config is applied: /user disable admin
 #
-# There are deliberately no firewall rules here. This is an L2 switch on a trusted subnet
-# reached only through merchant, so /ip service above is the access control. Add an input
-# chain once the device is physically reachable and a mistake cannot strand it.
 
 /system identity set name=osty
 
@@ -44,6 +41,20 @@ add address=10.10.10.2/24 interface=ether1
 add dst-address=0.0.0.0/0 gateway=10.10.10.1
 
 /ip dns set servers=10.10.10.1
+
+# Input chain for the switch itself; bridged traffic never touches it. mac-winbox on ether1
+# still works if a mistake here blocks IP management.
+/ip firewall filter
+add chain=input action=accept connection-state=established,related,untracked comment="osty-fw: replies"
+add chain=input action=drop connection-state=invalid comment="osty-fw: invalid"
+add chain=input action=accept protocol=icmp limit=50,5:packet comment="osty-fw: ping"
+add chain=input action=accept in-interface=ether1 src-address=10.10.10.0/24 protocol=tcp dst-port=22,8291 \
+    comment="osty-fw: management from the lab"
+add chain=input action=accept in-interface=ether1 src-address=REPLACE_MGMT_HOST protocol=tcp dst-port=22,8291 \
+    comment="osty-fw: management from the workstation"
+add chain=input action=drop comment="osty-fw: everything else"
+
+/ipv6 settings set disable-ipv6=yes
 
 /ip service
 set telnet disabled=yes
