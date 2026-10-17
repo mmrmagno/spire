@@ -22,7 +22,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: nginx
-          image: ghcr.io/mmrmagno/marc-os-blog:latest@sha256:681bf62a98fa424d4ada6da24273d148976a4c78f5801ed9eddf3af15ee80bb4
+          image: ghcr.io/mmrmagno/marc-os-blog:latest@sha256:12272681a83b22f4bcb8c9cc4c617de046afe22048e28691c95a1855005cc75b
           ports:
             - name: http
               containerPort: 8080
