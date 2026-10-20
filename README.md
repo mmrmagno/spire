@@ -55,7 +55,7 @@ Two more MS-01s are planned.
 ```
 talos/
   schematics/    Image Factory schematics, one per hardware class
-  patches/       one common patch, one per node, plus the Cilium prerequisites
+  patches/       one common patch, one per node, one for the MS-01 network, plus the Cilium prerequisites
   secrets/       secrets.enc.yaml, SOPS/age encrypted
   generated/     rendered machine configs, gitignored
 kubernetes/
@@ -119,7 +119,8 @@ disks, and device names can swap between boots.
 ## What is next
 
 - **The rest of the cloud server.** The blog, browcord and valart already run here.
-- **10G for every node** through the switch, instead of the 1G copper they use today.
+- **An MS-01 in place of architect.** The workers moved to 10G DACs in October, the N100
+  is the last node on 1G copper.
 - **Rook/Ceph** for replicated storage, once every MS-01 has a second NVMe for it.
 - **Real backups** before anything stateful moves in.
 
