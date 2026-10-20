@@ -1,0 +1,9 @@
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: fabric0
+selector:
+  match: link.bus_path == "0000:02:00.0"
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: fabric0

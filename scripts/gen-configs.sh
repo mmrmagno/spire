@@ -52,7 +52,7 @@ for n in "${NODES[@]}"; do
   else
     TYPE=worker
     PATCH_FLAG=--config-patch-worker
-    EXTRA=()
+    EXTRA=(--config-patch-worker @talos/patches/ms01-network.yaml)
   fi
   for s in talos/secrets/"${n}"-*.enc.yaml; do
     [ -e "$s" ] || continue

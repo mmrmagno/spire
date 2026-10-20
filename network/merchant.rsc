@@ -18,31 +18,37 @@ add name=bridge-lab vlan-filtering=no priority=0x4000
 add name=WAN
 add name=LAN
 add name=MGMT
+add name=AMT
 
 /interface bridge port
 add bridge=bridge-lab interface=ether2 pvid=10
 add bridge=bridge-lab interface=ether3 pvid=10
 add bridge=bridge-lab interface=ether4 pvid=10
-add bridge=bridge-lab interface=ether5 pvid=10
-add bridge=bridge-lab interface=ether6 pvid=10
+add bridge=bridge-lab interface=ether5 pvid=40
+add bridge=bridge-lab interface=ether6 pvid=40
 add bridge=bridge-lab interface=ether7 pvid=10
 add bridge=bridge-lab interface=sfp-sfpplus1
 
 /interface bridge vlan
 add bridge=bridge-lab vlan-ids=10 tagged=bridge-lab,sfp-sfpplus1 \
-    untagged=ether2,ether3,ether4,ether5,ether6,ether7
+    untagged=ether2,ether3,ether4,ether7
+# Intel AMT on the MS-01 i226-LM copper ports. Never in LAN: "lab to anywhere" must not match it.
+add bridge=bridge-lab vlan-ids=40 tagged=bridge-lab untagged=ether5,ether6
 
 /interface vlan
 add name=vlan10-lab interface=bridge-lab vlan-id=10
+add name=vlan40-amt interface=bridge-lab vlan-id=40
 
 /interface list member
 add interface=ether1 list=WAN
 add interface=vlan10-lab list=LAN
 add interface=ether8 list=MGMT
+add interface=vlan40-amt list=AMT
 
 /ip address
 add address=192.168.0.2/24 interface=ether1
 add address=10.10.10.1/24 interface=vlan10-lab
+add address=10.10.40.1/24 interface=vlan40-amt
 add address=192.168.88.1/24 interface=ether8
 
 /ip route
@@ -65,21 +71,26 @@ add name=regent instance=lab templates=k8s remote.address=10.10.10.22 remote.as=
 /ip pool
 add name=lab-pool ranges=10.10.10.100-10.10.10.199
 add name=bg-pool ranges=192.168.88.100-192.168.88.199
+add name=amt-pool ranges=10.10.40.100-10.10.40.199
 
 /ip dhcp-server
 add name=lab interface=vlan10-lab address-pool=lab-pool lease-time=1d disabled=no
 add name=breakglass interface=ether8 address-pool=bg-pool lease-time=1h disabled=no
+add name=amt interface=vlan40-amt address-pool=amt-pool lease-time=1d disabled=no
 
 /ip dhcp-server network
 add address=10.10.10.0/24 gateway=10.10.10.1 dns-server=10.10.10.1 domain=home.arpa
 add address=192.168.88.0/24 gateway=192.168.88.1 dns-server=192.168.88.1
+add address=10.10.40.0/24 gateway=10.10.40.1
 
-# Keyed on the nodes' copper NICs. Only ether1 is 2.5G on this box, so ether2-8 link at 1G.
-# Moving a node to SFP+ presents a different MAC and needs its own lease.
+# MS-01 leases are keyed on the X710 port 0 MAC (DAC to osty); architect is still the N100 on copper.
+# A node joining over SFP+ first gets a dynamic lease: remove it, or Talos keeps it until reboot.
 /ip dhcp-server lease
 add mac-address=REPLACE_ARCHITECT_MAC address=10.10.10.11 server=lab comment=architect
 add mac-address=REPLACE_IRONCLAD_MAC address=10.10.10.21 server=lab comment=ironclad
 add mac-address=REPLACE_REGENT_MAC address=10.10.10.22 server=lab comment=regent
+add mac-address=REPLACE_IRONCLAD_AMT_MAC address=10.10.40.21 server=amt comment=ironclad-amt
+add mac-address=REPLACE_REGENT_AMT_MAC address=10.10.40.22 server=amt comment=regent-amt
 
 /ip dns set servers=192.168.0.1 allow-remote-requests=yes
 
@@ -98,6 +109,7 @@ add chain=input action=accept in-interface-list=MGMT comment="break-glass ether8
 add chain=input action=accept in-interface-list=LAN protocol=udp dst-port=53
 add chain=input action=accept in-interface-list=LAN protocol=tcp dst-port=53
 add chain=input action=accept in-interface-list=LAN protocol=udp dst-port=67
+add chain=input action=accept in-interface-list=AMT protocol=udp dst-port=67 comment="AMT gets DHCP, nothing else"
 add chain=input action=accept in-interface-list=LAN protocol=tcp dst-port=179 \
     src-address=10.10.10.0/24
 add chain=input action=accept src-address-list=mgmt protocol=tcp dst-port=22,8291
@@ -114,6 +126,15 @@ add chain=input action=drop
 add chain=forward action=fasttrack-connection connection-state=established,related
 add chain=forward action=accept connection-state=established,related,untracked
 add chain=forward action=drop connection-state=invalid
+add chain=forward action=drop in-interface-list=AMT comment="AMT never opens connections"
+add chain=forward action=accept src-address-list=mgmt dst-address=10.10.40.0/24 protocol=tcp \
+    dst-port=16993,16995 comment="workstation to AMT, TLS only"
+add chain=forward action=accept src-address=192.168.88.0/24 dst-address=10.10.40.0/24 protocol=tcp \
+    dst-port=16993,16995 comment="break-glass laptop to AMT"
+# BREAK-GLASS, remote AMT over the tailnet. Tailscale subnet routes arrive from the node IPs, so this
+# lets every pod in too: enable only during an emergency, plus the ACL grant for 10.10.40.0/24.
+add chain=forward action=accept src-address=10.10.10.0/24 dst-address=10.10.40.0/24 protocol=tcp \
+    dst-port=16993,16995 disabled=yes comment="AMT-TAILNET break-glass, keep disabled"
 add chain=forward action=drop in-interface-list=LAN dst-address=192.168.0.0/16 \
     comment="lab never opens connections into the house"
 add chain=forward action=accept in-interface-list=LAN comment="lab to anywhere"
